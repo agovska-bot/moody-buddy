@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { useAppContext } from '../context/AppContext';
 import ScreenWrapper from '../components/ScreenWrapper';
@@ -55,23 +56,23 @@ const MoodChart: React.FC<{ history: MoodEntry[], isOlderGroup: boolean }> = ({ 
 
     // Conditional styles
     const containerClasses = isOlderGroup 
-        ? "bg-white/80 backdrop-blur-md border border-white shadow-md mx-0 mb-6"
-        : "bg-white/50 border-2 border-dashed border-gray-300 mx-4 mb-6 transform rotate-1";
+        ? "bg-white/80 backdrop-blur-md border border-white shadow-md mx-0 mb-6 pt-6"
+        : "bg-white/60 border-2 border-dashed border-gray-300 mx-4 mb-6 transform rotate-1 pt-6";
     
     const badgeClasses = isOlderGroup
         ? "bg-teal-100 text-teal-800"
-        : "bg-yellow-100 text-yellow-800 shadow-sm transform -rotate-2";
+        : "bg-yellow-100 text-yellow-800 shadow-sm transform -rotate-2 border border-yellow-200";
 
     return (
         <div className={`flex flex-col items-center justify-center py-4 rounded-xl relative ${containerClasses}`}>
-             <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-2 py-1 text-xs font-bold ${badgeClasses}`}>
+             <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-xs font-bold z-30 whitespace-nowrap rounded-full ${badgeClasses}`}>
                 {t('reflections_screen.mood_chart_title', 'My Mood Mix')}
             </div>
             
-            <div className="flex items-center gap-6">
+            <div className="flex flex-row items-center justify-center gap-6 p-2 w-full">
                 {/* The Chart */}
-                <div className="relative w-24 h-24">
-                    <svg viewBox="-1 -1 2 2" className="transform -rotate-90 w-full h-full">
+                <div className="relative w-24 h-24 flex-shrink-0">
+                    <svg viewBox="-1 -1 2 2" className="transform -rotate-90 w-full h-full" style={{ overflow: 'visible' }}>
                         {data.map((slice, index) => {
                             const [startX, startY] = getCoordinatesForPercent(slice.startPercent);
                             const [endX, endY] = getCoordinatesForPercent(slice.startPercent + slice.percent);
@@ -98,19 +99,19 @@ const MoodChart: React.FC<{ history: MoodEntry[], isOlderGroup: boolean }> = ({ 
                         {/* Inner White Circle to make it a donut */}
                         <circle cx="0" cy="0" r="0.6" fill={isOlderGroup ? "#f8fafc" : "white"} />
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center flex-col">
-                        <span className="text-xl font-bold text-gray-700 leading-none">{history.length}</span>
-                        <span className="text-[0.5rem] uppercase text-gray-500 font-bold leading-none">Total</span>
+                    <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
+                        <span className="text-xl font-bold text-gray-700 leading-none mb-0.5 leading-none">{history.length}</span>
+                        <span className="text-[0.6rem] uppercase text-gray-500 font-bold leading-none tracking-tighter leading-none">Total</span>
                     </div>
                 </div>
 
-                {/* Legend */}
-                <div className="flex flex-col gap-1">
+                {/* Legend - Explicitly on the right */}
+                <div className="flex flex-col gap-1.5 min-w-[90px]">
                     {data.sort((a,b) => b.count - a.count).map((slice) => (
-                        <div key={slice.mood} className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: MOOD_HEX_COLORS[slice.mood] }}></div>
-                            <span className="text-xs font-bold text-gray-600">{t(`moods.${slice.mood}`)}</span>
-                            <span className="text-xs text-gray-400">({slice.count})</span>
+                        <div key={slice.mood} className="flex items-center gap-2 whitespace-nowrap">
+                            <div className="w-3 h-3 rounded-full flex-shrink-0 shadow-sm" style={{ backgroundColor: MOOD_HEX_COLORS[slice.mood] }}></div>
+                            <span className="text-xs font-bold text-gray-600 truncate max-w-[80px]">{t(`moods.${slice.mood}`)}</span>
+                            <span className="text-xs text-gray-400 font-mono">({slice.count})</span>
                         </div>
                     ))}
                 </div>
@@ -190,18 +191,15 @@ const ReflectionScreen: React.FC = () => {
 
         // Younger group mood entry
         return (
-            <div className={`mb-6 p-4 relative font-handwriting transform ${rotation} transition-transform hover:rotate-0`}>
-                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-3 w-32 h-8 bg-black/5 opacity-20 rotate-1"></div> {/* Shadow of tape */}
-                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-3 w-32 h-8 bg-white/30 backdrop-blur-sm border-l border-r border-white/50 rotate-1"></div> {/* Tape */}
-                
-                <div className="flex items-center space-x-4">
+            <div className={`mb-6 px-4 pt-4 pb-4 relative font-handwriting transform ${rotation} transition-transform hover:rotate-0`}>
+                <div className="flex items-center space-x-4 mt-2">
                     <div className={`w-16 h-16 flex items-center justify-center rounded-full shadow-md border-4 border-white transform -rotate-6 ${MOOD_COLORS[entry.mood]}`}>
                         <span className="text-4xl">{MOOD_EMOJIS[entry.mood]}</span>
                     </div>
                     <div>
-                        <p className="text-gray-500 text-xs font-sans mb-1">{new Date(entry.date).toLocaleDateString()} • {new Date(entry.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-                        <p className="text-xl text-teal-900 font-bold">{t('reflections_screen.feeling_mood').replace('{mood}', t(`moods.${entry.mood}`))}</p>
-                        {entry.note && <p className="text-gray-700 text-lg mt-1">"{ entry.note }"</p>}
+                        <p className="text-gray-400 text-xs font-sans mb-1 mt-1 tracking-wide">{new Date(entry.date).toLocaleDateString()} • {new Date(entry.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                        <p className="text-xl text-teal-900 font-bold leading-tight">{t('reflections_screen.feeling_mood').replace('{mood}', t(`moods.${entry.mood}`))}</p>
+                        {entry.note && <p className="text-gray-700 text-lg mt-1 leading-snug">"{ entry.note }"</p>}
                     </div>
                 </div>
                 <div className="w-full h-px bg-teal-900/10 mt-4"></div>
@@ -380,10 +378,12 @@ const ReflectionScreen: React.FC = () => {
                 ) : (
                     // Younger Kids Input - Sticky Note
                     <div className={`relative ${stickyNoteColor} p-4 pb-12 shadow-md transform -rotate-1 transition-transform focus-within:rotate-0 focus-within:scale-[1.02] duration-300`}>
-                        {/* Tape visual */}
-                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 bg-white/40 backdrop-blur-sm transform rotate-2 shadow-sm"></div>
+                        {/* Tape visual - Realistic style */}
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-8 rotate-2 z-10 pointer-events-none">
+                            <div className="w-full h-full bg-white/40 backdrop-blur-[1px] shadow-[0_1px_3px_rgba(0,0,0,0.1)] border-l border-r border-white/60"></div>
+                        </div>
                         
-                        <p className="font-handwriting text-xl text-gray-800 mb-2 opacity-75 text-center">"{prompt}"</p>
+                        <p className="font-handwriting text-xl text-gray-800 mb-2 opacity-75 text-center mt-2">"{prompt}"</p>
                         <textarea
                             className={`w-full bg-transparent border-b border-gray-400/30 focus:border-gray-500 focus:outline-none text-2xl font-handwriting text-gray-900 leading-relaxed placeholder-gray-500/50 resize-none`}
                             rows={2}
