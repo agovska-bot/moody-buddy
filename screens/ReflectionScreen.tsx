@@ -55,9 +55,10 @@ const MoodChart: React.FC<{ history: MoodEntry[], isOlderGroup: boolean }> = ({ 
     };
 
     // Conditional styles
+    // CHANGED: Removed border-dashed, made it wider (mx-1), solid white bg with shadow for card look
     const containerClasses = isOlderGroup 
         ? "bg-white/80 backdrop-blur-md border border-white shadow-md mx-0 mb-6 pt-6"
-        : "bg-white/60 border-2 border-dashed border-gray-300 mx-4 mb-6 transform rotate-1 pt-6";
+        : "bg-white shadow-md mx-1 mb-6 transform rotate-1 pt-6 rounded-xl border border-gray-100";
     
     const badgeClasses = isOlderGroup
         ? "bg-teal-100 text-teal-800"
@@ -69,7 +70,7 @@ const MoodChart: React.FC<{ history: MoodEntry[], isOlderGroup: boolean }> = ({ 
                 {t('reflections_screen.mood_chart_title', 'My Mood Mix')}
             </div>
             
-            <div className="flex flex-row items-center justify-center gap-6 p-2 w-full">
+            <div className="flex flex-row items-center justify-center gap-4 p-2 w-full">
                 {/* The Chart */}
                 <div className="relative w-24 h-24 flex-shrink-0">
                     <svg viewBox="-1 -1 2 2" className="transform -rotate-90 w-full h-full" style={{ overflow: 'visible' }}>
@@ -105,13 +106,14 @@ const MoodChart: React.FC<{ history: MoodEntry[], isOlderGroup: boolean }> = ({ 
                     </div>
                 </div>
 
-                {/* Legend - Explicitly on the right */}
-                <div className="flex flex-col gap-1.5 min-w-[90px]">
+                {/* Legend - Explicitly on the right, no truncation */}
+                <div className="flex flex-col gap-1.5 flex-grow">
                     {data.sort((a,b) => b.count - a.count).map((slice) => (
-                        <div key={slice.mood} className="flex items-center gap-2 whitespace-nowrap">
+                        <div key={slice.mood} className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full flex-shrink-0 shadow-sm" style={{ backgroundColor: MOOD_HEX_COLORS[slice.mood] }}></div>
-                            <span className="text-xs font-bold text-gray-600 truncate max-w-[80px]">{t(`moods.${slice.mood}`)}</span>
-                            <span className="text-xs text-gray-400 font-mono">({slice.count})</span>
+                            {/* CHANGED: Removed truncate and max-w classes */}
+                            <span className="text-xs font-bold text-gray-600 leading-tight">{t(`moods.${slice.mood}`)}</span>
+                            <span className="text-xs text-gray-400 font-mono flex-shrink-0">({slice.count})</span>
                         </div>
                     ))}
                 </div>
