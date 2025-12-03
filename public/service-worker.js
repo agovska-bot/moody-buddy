@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moody-buddy-plus-v3';
+const CACHE_NAME = 'moody-buddy-plus-v6';
 
 // Install event: Simply skip waiting to activate immediately
 self.addEventListener('install', (event) => {
