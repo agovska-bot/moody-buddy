@@ -14,7 +14,7 @@ import Toast from './components/Toast';
 import LanguageSelectionScreen from './screens/LanguageSelectionScreen';
 // import RapBattleScreen from './screens/RapBattleScreen';
 
-// Final Demo Build - v1.2
+// Final Demo Build - v1.3 (New Logo)
 const App: React.FC = () => {
   const { currentScreen, toastMessage, ageGroup, language } = useAppContext();
 
