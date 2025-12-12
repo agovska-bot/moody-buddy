@@ -27,13 +27,31 @@ const GratitudeScreen: React.FC = () => {
 
     try {
       const ai = new GoogleGenAI({apiKey: apiKey});
+      
+      // Dynamic topics to force variety in the AI response
+      const topics = [
+        "a specific color",
+        "a sound or song",
+        "a texture or feeling",
+        "a friend or family member",
+        "a funny moment",
+        "a tasty food",
+        "a favorite toy or game",
+        "something in nature (sun, rain, trees)",
+        "a small success or achievement",
+        "a feeling of safety or comfort",
+        "something they learned",
+        "a happy memory"
+      ];
+      const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+
       let agePromptSegment = "";
       switch (ageGroup) {
         case '7-9':
-          agePromptSegment = "for a child aged 7-9. It can be about a friendship, a fun activity, or something beautiful in nature.";
+          agePromptSegment = `for a child aged 7-9. Focus the question specifically on this topic: '${randomTopic}'.`;
           break;
         case '10-12':
-          agePromptSegment = "for a child aged 10-12. It can be about a personal strength, an opportunity they have, or a challenging experience that taught them something.";
+          agePromptSegment = `for a child aged 10-12. Focus the question specifically on this topic: '${randomTopic}', encouraging deeper reflection.`;
           break;
       }
 
@@ -44,13 +62,13 @@ const GratitudeScreen: React.FC = () => {
         languageInstruction = "The response must be in the Turkish language.";
       }
       
-      const prompt = `Generate a single, short, simple gratitude activity question ${agePromptSegment}. ${languageInstruction} The response must be only one sentence and be a direct question. For example: 'What is one thing that made you smile today?' Do not use lists or bullet points.`;
+      const prompt = `Generate a single, unique gratitude activity question ${agePromptSegment}. ${languageInstruction} The response must be only one sentence and a direct question. Do not start with "Tell me". Example format: "What is one thing...?" or "Who is someone...?"`;
       
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt,
         config: {
-          temperature: 0.9,
+          temperature: 1.1, // Increased temperature for more randomness
         }
       });
       const text = response.text;

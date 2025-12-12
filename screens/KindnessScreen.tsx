@@ -27,13 +27,27 @@ const KindnessScreen: React.FC = () => {
       
       try {
         const ai = new GoogleGenAI({apiKey: apiKey});
+        
+        // Random themes to avoid repetition in kindness tasks
+        const themes = [
+            "a family member (parent, sibling)",
+            "a friend or neighbor",
+            "helping with a small chore at home",
+            "giving a genuine compliment",
+            "being kind to the environment or nature",
+            "sharing something",
+            "being kind to yourself",
+            "saying thank you for something specific"
+        ];
+        const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+
         let agePromptSegment = "";
         switch (ageGroup) {
           case '7-9':
-            agePromptSegment = "for a child aged 7-9. This can involve helping with a small chore without being asked, or giving someone a genuine compliment.";
+            agePromptSegment = `for a child aged 7-9. Focus specifically on this type of kindness: '${randomTheme}'. Keep it simple and sweet.`;
             break;
           case '10-12':
-            agePromptSegment = "for a child aged 10-12. This can involve more emotional intelligence, like actively listening to someone, offering help on a task without being asked, or standing up for a friend.";
+            agePromptSegment = `for a child aged 10-12. Focus specifically on this type of kindness: '${randomTheme}'. It can involve social awareness or emotional intelligence.`;
             break;
         }
 
@@ -50,7 +64,7 @@ const KindnessScreen: React.FC = () => {
           model: 'gemini-2.5-flash',
           contents: prompt,
           config: {
-              temperature: 0.9,
+              temperature: 1.1, // Increased temperature for variety
           }
         });
         const text = response.text;

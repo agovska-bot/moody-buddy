@@ -27,13 +27,28 @@ const MoveScreen: React.FC = () => {
 
       try {
         const ai = new GoogleGenAI({apiKey: apiKey});
+        
+        // Random themes to force variety in movement tasks
+        const themes = [
+          "pretending to be a specific animal",
+          "a superhero pose or action",
+          "moving like a robot",
+          "moving in slow motion",
+          "a balance challenge",
+          "a sports action (like throwing, catching, swimming)",
+          "a silly walk",
+          "stretching like a cat or tree",
+          "jumping or hopping variations"
+        ];
+        const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+
         let agePromptSegment = "";
         switch (ageGroup) {
           case '7-9':
-            agePromptSegment = "for a child aged 7-9. It can be a simple dance move or a fun challenge, like pretending to be an animal or a superhero.";
+            agePromptSegment = `for a child aged 7-9. Focus specifically on this movement theme: '${randomTheme}'. It should be fun and playful.`;
             break;
           case '10-12':
-            agePromptSegment = "for a child aged 10-12. It can be a bit more challenging, like a specific yoga pose, a coordination drill, or a short high-intensity interval.";
+            agePromptSegment = `for a child aged 10-12. Focus specifically on this movement theme: '${randomTheme}'. It can be a bit more precise or challenging.`;
             break;
         }
 
@@ -50,7 +65,7 @@ const MoveScreen: React.FC = () => {
           model: 'gemini-2.5-flash',
           contents: prompt,
           config: {
-            temperature: 0.9,
+            temperature: 1.1, // Higher temperature for more variety
           }
         });
         const text = response.text;

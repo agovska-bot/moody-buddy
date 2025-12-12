@@ -78,7 +78,7 @@ const TTSButton: React.FC<TTSButtonProps> = ({ textToSpeak, className }) => {
       const ai = new GoogleGenAI({apiKey: apiKey});
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash-preview-tts",
-        contents: [{ parts: [{ text: `Say cheerfully: ${textToSpeak}` }] }],
+        contents: [{ parts: [{ text: `Say rhythmically and energetically: ${textToSpeak}` }] }],
         config: {
           responseModalities: [Modality.AUDIO],
           speechConfig: {

@@ -155,16 +155,14 @@ const HomeScreen: React.FC = () => {
                   animationType="story-bubbles"
                   onClick={() => setCurrentScreen(Screen.StoryCreator)}
               />
-              {/* 
-              <AnimatedTaskCard 
+              {/* <AnimatedTaskCard 
                   title={t(`${ageGroupKey}.rap_battle_title`)}
                   description={t(`${ageGroupKey}.rap_battle_description`)}
                   icon="🎤"
                   color={theme.rapBattle}
                   animationType="mood-bubbles"
                   onClick={() => setCurrentScreen(Screen.RapBattle)}
-              /> 
-              */}
+              /> */}
               <AnimatedTaskCard 
                   title={t(`${ageGroupKey}.gratitude_jar_title`)}
                   description={t(`${ageGroupKey}.gratitude_jar_description`)}
@@ -207,15 +205,13 @@ const HomeScreen: React.FC = () => {
                     color={theme.storyCreator}
                     onClick={() => setCurrentScreen(Screen.StoryCreator)}
                 />
-                {/* 
-                <TaskCard 
+                {/* <TaskCard 
                     title={t(`${ageGroupKey}.rap_battle_title`)}
                     description={t(`${ageGroupKey}.rap_battle_description`)}
                     icon="🎤"
                     color={theme.rapBattle}
                     onClick={() => setCurrentScreen(Screen.RapBattle)}
-                /> 
-                */}
+                /> */}
                 <TaskCard 
                     title={t(`${ageGroupKey}.gratitude_jar_title`)}
                     description={t(`${ageGroupKey}.gratitude_jar_description`)}

@@ -104,13 +104,27 @@ const CalmZoneScreen: React.FC = () => {
 
     try {
         const ai = new GoogleGenAI({apiKey: apiKey});
+        
+        // Random themes to avoid repetition in calm tasks
+        const themes = [
+            "listening closely to nearby sounds",
+            "imagining a favorite color",
+            "noticing textures around you",
+            "a gentle body scan or relaxing a body part",
+            "imagining a peaceful place (beach, forest, cloud)",
+            "sending kind thoughts to someone",
+            "observing details in the room",
+            "imagining floating or feeling light"
+        ];
+        const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+
         let agePromptSegment = "";
         switch (ageGroup) {
             case '7-9':
-                agePromptSegment = "for a child aged 7-9. It can be a simple visualization, like imagining a favorite color, or a simple mindfulness exercise.";
+                agePromptSegment = `for a child aged 7-9. Focus specifically on this mindfulness theme: '${randomTheme}'. Keep it very simple and visual.`;
                 break;
             case '10-12':
-                agePromptSegment = "for a child aged 10-12. This can be a more advanced mindfulness technique, like a body scan, focusing on a single point of sensation, or a guided visualization about a peaceful place."
+                agePromptSegment = `for a child aged 10-12. Focus specifically on this mindfulness theme: '${randomTheme}'. It can be slightly more abstract or focused on sensation.`;
                 break;
         }
 
@@ -127,7 +141,7 @@ const CalmZoneScreen: React.FC = () => {
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
-                temperature: 0.9,
+                temperature: 1.1, // Increased temperature for variety
             }
         });
         const text = response.text;
